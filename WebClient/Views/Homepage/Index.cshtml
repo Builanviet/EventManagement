@@ -1,0 +1,951 @@
+﻿
+@using System.Security.Claims;
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script src="~/js/main.js"></script>
+       <style>
+        /* Custom FullCalendar Styling */
+        .fc {
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        .fc-toolbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .fc-day-header {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-weight: bold;
+        }
+
+        .fc-daygrid-day-number {
+            color: #343a40;
+        }
+
+        .fc-event {
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+        }
+
+        .fc-event:hover {
+            background-color: #0056b3;
+        }
+
+        /* Navbar and Select Styling */
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        #calendarSelect {
+            margin-bottom: 20px;
+        }
+
+        /* Modal Styling */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-title {
+            color: white;
+        }
+
+        .form-check-input {
+            margin-right: 10px;
+        }
+
+        .form-control, .btn {
+            margin-top: 10px;
+        }
+
+        .custom-border {
+            border: 5px solid #ff9980; /* Độ dày 1px và màu #ff9980 */
+            border-radius: 10px; /* Đường viền bo tròn */
+            overflow: hidden; /* Đảm bảo các góc bo tròn hiển thị đúng */
+            margin-bottom: 20px; /* Khoảng cách dưới */
+            padding: 15px; /* Padding bên trong để tạo khoảng cách */
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .custom-table th, .custom-table td {
+                border: 1px solid #ddd; /* Viền border */
+                padding: 8px; /* Khoảng cách giữa nội dung và viền */
+                text-align: left;
+            }
+
+            /* Màu nền cho hàng lẻ */
+            .custom-table tr:nth-child(odd) {
+                background-color: #ffffff; /* Màu nền cho hàng lẻ */
+            }
+
+            /* Màu nền cho hàng chẵn */
+            .custom-table tr:nth-child(even) {
+                background-color: #ffd6cc; /* Màu nền cho hàng chẵn */
+            }
+
+            /* Hiệu ứng hover */
+            .custom-table tr:hover {
+                background-color: #f2f2f2; /* Màu nền khi hover */
+            }
+       
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .selected-email {
+            color: black;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+            .selected-email .remove-email {
+                color: red;
+                margin-left: 5px;
+                cursor: pointer;
+            }
+    </style>
+
+</head>
+<body>
+    <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+        <a class='navbar-brand' href='#'>Event Calendar</a>
+        <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+            <span class='navbar-toggler-icon'></span>
+        </button>
+
+        <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+            <ul class='navbar-nav mr-auto'>
+                <li class='nav-item active'>
+                    <a class='nav-link' href='Homepage/Index'>Home <span class='sr-only'>(current)</span></a>
+                    <a class='nav-link' id='logoutLink'>Logout</a>
+                    
+                </li>
+           
+                <!-- Add more items as needed -->
+            </ul>
+          
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge badge-danger" id="notificationCount">0</span> <!-- You can dynamically set the number of notifications -->
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="eventDropdown">
+                        <h6 class="dropdown-header">Invitations</h6>
+                        <a class="dropdown-item" href="#">Event 1</a>
+                        <a class="dropdown-item" href="#">Event 2</a>
+                        <a class="dropdown-item" href="#">Event 3</a>
+                        <!-- Add more events as needed -->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">View all events</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+ 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="custom-border">
+                    <button id="addCalendarButton" class="btn btn-primary rounded-3 mb-3">Add Calendar</button>
+                    <h1>CAlENDAR LIST</h1>
+                    <table class="custom-table" id="calendarTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Name
+                                    <button class="btn btn-sm btn-outline-primary float-right sort-btn" data-column="name" data-order="asc">
+                                        <i class="fas fa-sort-alpha-up"></i> <!-- Icon Asc -->
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary float-right sort-btn" data-column="name" data-order="desc">
+                                        <i class="fas fa-sort-alpha-down"></i> <!-- Icon Desc -->
+                                    </button>
+                                </th>
+                                <th scope="col">Description
+                                    <button class="btn btn-sm btn-outline-primary float-right sort-btn" data-column="description" data-order="asc">
+                                        <i class="fas fa-sort-alpha-up"></i> <!-- Icon Asc -->
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary float-right sort-btn" data-column="description" data-order="desc">
+                                        <i class="fas fa-sort-alpha-down"></i> <!-- Icon Desc -->
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarList">
+                            <!-- Events will be dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="custom-border">
+                    <button id="addEventButton" class="btn btn-primary rounded-3 mb-3">Add Event</button>
+                    <h1>EVENT LIST</h1>
+                <table class="custom-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Location</th
+                             <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventList">
+                        <!-- Events will be dynamically populated here -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="col-lg-6 custom-border">
+                <select id="calendarSelect" class="">
+                    <option>Loading calendars...</option>
+                </select>
+                <div id="calendar" ></div>
+            </div>
+          
+        </div>
+    </div>
+    
+
+    <!-- Event Details Modal -->
+    <div class="modal fade" id="eventDetailsModal" tabindex="-1" role="dialog" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventDetailsModalLabel">Event Details</h5>
+                   
+                </div>
+                <div class="modal-body">
+                    <form id="eventDetailsForm">
+                        <div class="form-group">
+                            <label for="eventTitle">Title</label>
+                            <input type="text" class="form-control" id="eventTitle" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea class="form-control" id="eventDescription" name="description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Location</label>
+                            <input type="text" class="form-control" id="eventLocation" name="location">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventStartTime">Start Time</label>
+                            <input type="datetime-local" class="form-control" id="eventStartTime" name="startTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventEndTime">End Time</label>
+                            <input type="datetime-local" class="form-control" id="eventEndTime" name="endTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventAllDay">All Day</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="allDay" id="allDayYes" value="true">
+                                <label class="form-check-label" for="allDayYes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="allDay" id="allDayNo" value="false">
+                                <label class="form-check-label" for="allDayNo">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventCalendarId">Calendar</label>
+                            <select class="form-control" id="eventCalendarId" name="calendarId">
+                            </select>
+                        </div>
+                        <div class="form-group" id="guestform">
+                            <label for="eventGuests">Guests</label>
+                            <input type="text" class="form-control" id="eventGuests" placeholder="Enter email addresses">
+                            <div id="guestSuggestions" class="list-group"></div>
+                            <div id="selectedGuests" class="mt-2"></div>
+                        </div>
+                        <div class="form-group" id="guestsListGroup">
+                            <label for="guestList">Guest List</label>
+                            <ul id="guestList" class="list-group"></ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var selectedCalendarId;
+        var calendar;
+        var selectedEmails = [];
+        //check token
+        function isTokenValid(token) {
+            if (!token) {
+                return false;
+            }
+
+            const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+            const exp = tokenPayload.exp;
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            return exp > currentTime;
+        }
+        //generate calendar
+        function fetchCalendars() {
+            var token = localStorage.getItem('token');
+            if (!isTokenValid(token)) {
+                alert('Token has expired or is invalid. Please login again.');
+                return;
+            }
+            var userId = parseJwt(token);
+            $.ajax({
+                url: 'https://localhost:7192/odata/Calendar?$filter=UserId eq ' + userId,
+                method: 'GET',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (data) {
+                    $('#calendarSelect').empty();
+                    $('#eventCalendarId').empty();
+
+                    $('#calendarSelect').append($('<option>', {
+                        value: "All",
+                        text: "All"
+                    }));
+                    $.each(data.value, function (index, calendar) {
+                        $('#calendarSelect').append($('<option>', {
+                            value: calendar.CalendarId,
+                            text: calendar.Name
+                        }));
+                        $('#eventCalendarId').append($('<option>', {
+                            value: calendar.CalendarId,
+                            text: calendar.Name
+                        }));
+                    });
+
+                    $('#calendarSelect').change();
+                },
+                error: function (error) {
+                    console.error('Error fetching calendars:', error);
+                    alert('There was an error while fetching calendars!');
+                }
+            });
+        }
+
+        $('#addEventButton').click(function () {
+            // Clear form and remove event ID data
+            $('#eventDetailsForm')[0].reset();
+            $('#eventDetailsForm').removeData('event-id');
+            selectedEmails = [];
+            
+
+            $('#guestform').show();
+            $('#guestsListGroup').hide();
+            $('#eventDetailsModal').modal('show');
+        });
+        // Event listener for select change
+        $('#calendarSelect').change(function () {
+            var calendarId = $(this).val();
+            if (calendarId === "All") {
+                selectedCalendarId = null; // Đặt selectedCalendarId thành null khi chọn "All"
+            } else {
+                selectedCalendarId = calendarId;
+            }
+            console.log('Selected calendar ID:', selectedCalendarId);
+
+            calendar.refetchEvents();
+
+
+        });
+        //translate the jwt
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(atob(base64));
+                return payload.Id; // Assuming 'Id' is the key for userId in your token payload
+            } catch (error) {
+                console.error('Error parsing JWT:', error);
+                return null;
+            }
+        }
+        //full calendar generate
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchCalendars();
+            var calendarEl = document.getElementById('calendar');
+            var token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+            var userId = parseJwt(token);
+
+             calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay' // Add buttons for different views
+                },
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    var apiUrl ='';
+                    if(selectedCalendarId == null){
+                        apiUrl = 'https://localhost:7192/GetEventsByUserId/' + userId;
+
+                    }else{
+                        apiUrl = 'https://localhost:7192/GetEventsByUserId/' + userId + '/calendarId/'+selectedCalendarId;
+
+                    }
+                  
+                    $.ajax({
+                        url: apiUrl, // API endpoint URL
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        success: function (data) {
+                            console.log("abcd", data);
+                            var events = data.map(function (event) {
+                                return {
+                                    id: event.eventId,
+                                    title: event.title,
+                                    start: event.startTime,
+                                    end: event.endTime,
+                                    description: event.description,
+                                    location: event.location,
+                                    allDay: event.allDay,
+                                    createdAt: event.createdAt,
+                                    updatedAt: event.updatedAt
+                                };
+                            });
+                            successCallback(events);
+                            populateEvents(data);
+
+
+                        },
+                        error: function (error) {
+                            console.error('Error fetching events:', error);
+                            alert('There was an error while fetching events!');
+                            failureCallback(error);
+                        }
+                    });
+                   
+                },
+                eventBackgroundColor:"#ffd6cc",
+                eventBorderColor:"#ff9980",
+                
+                eventClick: function (info) {
+                    var token = localStorage.getItem('token');
+                    if (!isTokenValid(token)) {
+                        alert('Token has expired or is invalid. Please login again.');
+                        return;
+                    }
+
+                    $.ajax({
+                        url: 'https://localhost:7192/Odata/Event(' + info.event.id + ')', // Fetch event details
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        success: function (event) {
+                            console.log("abcde",event);
+                            // Populate the modal with event data
+                            $('#eventTitle').val(event.title);
+                            $('#eventDescription').val(event.description);
+                            $('#eventLocation').val(event.location);
+                            var startTime = event.startTime ? new Date(event.startTime) : null;
+                            $('#eventStartTime').val(startTime ? formatDateTime(startTime) : '');
+
+                            // Convert and format end time
+                            var endTime = event.endTime ? new Date(event.endTime) : null;
+                            $('#eventEndTime').val(endTime ? formatDateTime(endTime) : '');
+                            if (event.allDay) {
+                                $('#allDayYes').prop('checked', true);
+                            } else {
+                                $('#allDayNo').prop('checked', true);
+                            }
+                            $('#eventCalendarId').val(event.calendarId);
+                            var guestsListGroup = $('#guestsListGroup');
+                            guestsListGroup.empty(); // Clear existing guests
+
+                            event.eventAttendees.$values.forEach(function (guest) {
+                                var guestItem = $('<div class="list-group-item d-flex justify-content-between align-items-center"></div>');
+                                guestItem.text(guest.user.email + ' (' + guest.status + ')');
+                                var removeButton = $('<button class="btn btn-sm btn-danger">&times;</button>');
+                                removeButton.click(function () {
+                                    // Remove guest logic here
+                                    guestItem.remove();
+                                });
+                                guestItem.append(removeButton);
+                                guestsListGroup.append(guestItem);
+                            });
+                            selectedEmails = [];
+
+                            // Show the modal
+                            $('#eventDetailsModal').modal('show');
+                            $('#guestform').hide();
+                            $('#guestsListGroup').show();
+
+                            // Store event ID in form for later updates
+                            $('#eventDetailsForm').data('event-id', event.eventId);
+                        },
+                        error: function (error) {
+                            console.error('Error fetching event details:', error);
+                            alert('There was an error while fetching event details!');
+                        }
+                    });
+                }
+            });
+            calendar.render();
+            function populateEvents(events) {
+                var eventList = document.getElementById('eventList');
+                eventList.innerHTML = ''; // Clear existing content
+
+                events.forEach(function (event) {
+                    var startTime = new Date(event.startTime);
+                    var endTime = new Date(event.endTime);
+
+                    // Format date and time
+                    var startTimeFormatted = `${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}`;
+                    var endTimeFormatted = `${endTime.toLocaleDateString()} ${endTime.toLocaleTimeString()}`;
+
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                            <td>${event.title}</td>
+                            <td>${startTimeFormatted}</td>
+                            <td>${endTimeFormatted}</td>
+                            <td>${event.location}</td>
+                            <td>
+                                  <button class="btn btn-danger btn-sm" onclick="deleteEvent(${event.eventId})">
+                                  <i class="fas fa-trash-alt"></i>
+                                  </button>
+                       </td>
+
+                        `;
+                    eventList.appendChild(row);
+                });
+            }
+            $('#allDayYes').click(function () {
+          var startDate = $('#eventStartTime').val();
+          if (startDate) {
+            var startDateTime = new Date(startDate);
+            startDateTime.setHours(0, 0, 0, 0); // Set to 00:00
+            var endDateTime = new Date(startDate);
+            endDateTime.setHours(23, 59, 59, 999); // Set to 23:59
+
+            $('#eventStartTime').val(formatDateTime(startDateTime));
+            $('#eventEndTime').val(formatDateTime(endDateTime));
+        }    });
+
+         $('#eventStartTime').change(function () {
+        if ($('#allDayYes').is(':checked')) {
+            var startDate = $(this).val();
+            if (startDate) {
+                var startDateTime = new Date(startDate);
+                startDateTime.setHours(0, 0, 0, 0); // Set to 00:00
+                var endDateTime = new Date(startDate);
+                endDateTime.setHours(23, 59, 59, 999); // Set to 23:59
+
+                $('#eventStartTime').val(formatDateTime(startDateTime));
+                $('#eventEndTime').val(formatDateTime(endDateTime));
+            }
+        }
+    });
+        });
+         function deleteEvent(eventId) {
+        // Confirm deletion
+        if (!confirm('Are you sure you want to delete this event?')) {
+            return;
+        }
+
+        // Make an AJAX call to delete the event
+        $.ajax({
+            url: `https://localhost:7192/Odata/Event(${eventId})`, // Adjust the URL based on your API endpoint
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            success: function (response) {
+                console.log('Event deleted successfully:', response);
+                // Remove the deleted event from the table
+                 calendar.refetchEvents();
+
+            },
+            error: function (error) {
+                console.error('Error deleting event:', error);
+            }
+        });
+    }
+        function formatDateTime(date) {
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            return year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+        }
+
+        $('#eventDetailsForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+            var eventId = $(this).data('event-id'); // Get event ID from form data
+            var eventData = {
+                EventId: eventId,
+                Title: $('#eventTitle').val(),
+                Description: $('#eventDescription').val(),
+                Location: $('#eventLocation').val(),
+                StartTime: new Date($('#eventStartTime').val()),
+                EndTime: new Date($('#eventEndTime').val()),
+                AllDay: $('#allDayYes').is(':checked'),
+                CalendarId: $('#eventCalendarId').val(),
+               
+            };
+            var eventDataAdd = {
+                Title: $('#eventTitle').val(),
+                Description: $('#eventDescription').val(),
+                Location: $('#eventLocation').val(),
+                StartTime: new Date($('#eventStartTime').val()),
+                EndTime: new Date($('#eventEndTime').val()),
+                AllDay: $('#allDayYes').is(':checked'),
+                CalendarId: $('#eventCalendarId').val(),
+
+            };
+            console.log("abcdefg",eventData);
+            if (eventId) {
+                // Update existing event
+                updateEvent(eventId, eventData);
+            } else {
+                // Create new event
+                createEvent(eventDataAdd);
+            }
+        });
+        function updateEvent(eventId, eventData) {
+            var token = localStorage.getItem('token');
+            if (!isTokenValid(token)) {
+                alert('Token has expired or is invalid. Please login again.');
+                return;
+            }
+
+            $.ajax({
+                url: 'https://localhost:7192/Odata/Event(' + eventId + ')',
+                method: 'PUT', // Use PATCH method for updating
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json' // Set content type
+                },
+                data: JSON.stringify(eventData), // Convert data to JSON string
+                success: function (response) {
+                    console.log('Event updated successfully:', response);
+                    // Optionally, update the calendar or refresh events
+                    calendar.refetchEvents(); // Refresh events on the calendar
+                    $('#eventDetailsModal').modal('hide'); // Hide modal after update
+                },
+                error: function (error) {
+                    console.error('Error updating event:', error);
+                    alert('There was an error while updating the event!');
+                }
+            });
+        }
+        function createEvent(eventData) {
+            var token = localStorage.getItem('token');
+
+            $.ajax({
+                url: 'https://localhost:7192/Odata/Event',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(eventData),
+                success: function (data) {
+                    var eventId = data.EventId;
+                    calendar.refetchEvents();
+                    $('#eventDetailsModal').modal('hide');
+                    alert('Event created successfully!');
+
+                    if (selectedEmails.length > 0) {
+                        addEventAttendees(eventId);
+                    }
+                },
+                error: function (error) {
+                    var errorMessage = 'An error occurred.';
+
+                    if (error.responseJSON && error.responseJSON.message) {
+                        errorMessage = error.responseJSON.message;
+                    } else if (error.responseText) {
+                        errorMessage = error.responseText;
+                    } else if (error.statusText) {
+                        errorMessage = error.statusText;
+                    }
+
+                    alert(errorMessage);
+                }
+            });
+        }
+        function addEventAttendees(eventId) {
+            var token = localStorage.getItem('token');
+            var attendees = [];
+
+            selectedEmails.forEach(function (email) {
+                var encodedEmail = encodeURIComponent(email); // Mã hóa email
+
+                $.ajax({
+                    url: `https://localhost:7192/GetUsersLikeGmail/${encodedEmail}`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    success: function (data) {
+                        attendees.push({
+                            eventId: eventId,
+                            userId: data.userId,
+                            status: 'invited' // Bạn có thể điều chỉnh trạng thái phù hợp
+                        });
+                        console.log(attendees);
+                        // Nếu tất cả email đã được xử lý, gửi yêu cầu thêm attendees
+                        if (attendees.length === selectedEmails.length) {
+                            $.ajax({
+                                url: 'https://localhost:7192/AddEventAttendees',
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json'
+                                },
+                                data: JSON.stringify(attendees),
+                                success: function (data) {
+                                    console.log('Attendees added successfully!', data);
+                                },
+                                error: function (error) {
+                                    console.error('Error adding attendees:', error);
+                                }
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching UserId for email:', email, error);
+                    }
+                });
+            });
+        }
+
+        function loadCalendar() {
+            var token = localStorage.getItem('token');
+            if (!isTokenValid(token)) {
+                alert('Token has expired or is invalid. Please login again.');
+                return;
+            }
+
+            $.ajax({
+                url: 'https://localhost:7192/Calendar/GetByUserId', // Fetch event details
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (events) {
+                    var tableBody = $('#calendarTable tbody');
+                    tableBody.empty(); // Clear existing rows
+
+                    events.forEach(function (event) {
+                        var eventRow = `
+                            <tr>
+                                <td>${event.name}</td>
+                                <td>${event.description}</td>
+                             
+                            </tr>
+                        `;
+                        tableBody.append(eventRow);
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching event details:', error);
+                    alert('There was an error while fetching event details!');
+                }
+            });
+        }
+        $(document).ready(function () {
+
+            loadCalendar();
+            $('.sort-btn').on('click', function () {
+                var columnName = $(this).data('column');
+                var sortOrder = $(this).data('order');
+                applySorting(columnName, sortOrder);
+            });
+            $('#eventGuests').on('input', function () {
+                var query = $(this).val();
+                if (query.length > 2) {
+                    $.ajax({
+                        url: `https://localhost:7192/GetUsersByGmail/`+query,
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        },
+                        success: function (data) {
+                            $('#guestSuggestions').empty();
+                            console.log(data);
+                            data.$values.forEach(function (email) {
+                                $('#guestSuggestions').append(`<button type="button" class="list-group-item list-group-item-action">${email.email}</button>`);
+                            });
+                        },
+                        error: function (error) {
+                            console.error('Error fetching email suggestions:', error);
+                        }
+                    });
+                } else {
+                    $('#guestSuggestions').empty();
+                }
+            });
+
+            $('#guestSuggestions').on('click', '.list-group-item', function () {
+                var selectedEmail = $(this).text();
+                if (!selectedEmails.includes(selectedEmail)) {
+                    selectedEmails.push(selectedEmail);
+                    $('#selectedGuests').append(`<div class="selected-email badge badge-secondary mr-2" value="${selectedEmail}">${selectedEmail}<span class="remove-email" style="cursor:pointer;">&times;</span></div>`);
+                    $('#eventGuests').val('');
+                    $('#guestSuggestions').empty();
+                }
+            });
+
+            $('#selectedGuests').on('click', '.remove-email', function () {
+                var emailToRemove = $(this).parent().attr('value');
+                selectedEmails = selectedEmails.filter(email => email !== emailToRemove);
+                $(this).parent().remove();
+            });
+            function fetchUserEvents() {
+                $.ajax({
+                    url: 'https://localhost:7192/GetUserEvents', // Adjust the URL based on your API endpoint
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    success: function (data) {
+                        var eventDropdown = $('#eventDropdown');
+                        eventDropdown.find('.dropdown-item:not(:last)').remove(); // Remove previous events
+                        $('#notificationCount').text(data.length); // Update notification count
+
+                        if (data.length === 0) {
+                            eventDropdown.prepend('<a class="dropdown-item" href="#">No invitations</a>');
+                        } else {
+                            console.log("abcde",data);
+                            data.$values.forEach(function (event) {
+                                
+
+                                var acceptedChecked = event.status === 'accepted' ? 'checked' : '';
+                                var declinedChecked = event.status === 'declined' ? 'checked' : '';
+                                var tentativeChecked = event.status === 'tentative' ? 'checked' : '';
+                                var eventItem = `
+                            <a class="dropdown-item" href="#">
+                                <strong>${event.title}</strong><br>
+                                Location: ${event.location}<br>
+                                Start: ${new Date(event.startTime).toLocaleString()}<br>
+                                End: ${new Date(event.endTime).toLocaleString()}<br>
+                                Invited by: ${event.username} (${event.email})<br>
+                                        <div>
+                                        <label style="color:green">
+                                            <input type="radio" name="status_${event.eventId}" value="accepted" onchange="updateStatus(${event.eventId}, 'accepted')" ${acceptedChecked}> Accept
+                                        </label>
+                                        <label style="color:red">
+                                            <input type="radio" name="status_${event.eventId}" value="declined" onchange="updateStatus(${event.eventId}, 'declined')" ${declinedChecked}> Decline
+                                        </label>
+                                        <label style="color:yellow">
+                                            <input type="radio" name="status_${event.eventId}" value="tentative" onchange="updateStatus(${event.eventId}, 'tentative')" ${tentativeChecked}> Tentative
+                                        </label>
+                                    </div>
+                            </a>
+                            `;
+                                eventDropdown.prepend(eventItem);
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching events:', error);
+                    }
+                });
+            }
+           
+            $('#navbarDropdown').on('click', function () {
+                fetchUserEvents();
+            });
+            document.getElementById('logoutLink').addEventListener('click', function () {
+                logout();
+            });
+
+            
+          
+        });
+        function logout() {
+            localStorage.removeItem('token');
+
+            window.location.href = '/Home/Login'; // Adjust the URL to your login page
+        }
+        function updateStatus(eventId, status) {
+            console.log('Updating status for event:', eventId, 'to', status); // Debugging line
+
+            $.ajax({
+                url: `https://localhost:7192/UpdateEventStatus`, // Adjust the URL based on your API endpoint
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    eventId: eventId,
+                    status: status
+                }),
+                success: function (response) {
+                    console.log('Status updated successfully:', response);
+                },
+                error: function (error) {
+                    console.error('Error updating status:', error);
+                }
+            });
+        }
+        function applySorting(columnName, sortOrder) {
+            var token = localStorage.getItem('token');
+            if (!isTokenValid(token)) {
+                alert('Token has expired or is invalid. Please login again.');
+                return;
+            }
+
+            $.ajax({
+                url: 'https://localhost:7192/Calendar/GetByUserId', // Fetch event details with sorting
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: {
+                    '$orderby': `${columnName} ${sortOrder}`
+                },
+                success: function (events) {
+                    var tableBody = $('#calendarTable tbody');
+                    tableBody.empty(); // Clear existing rows
+
+                    events.forEach(function (event) {
+                        var eventRow = `
+                            <tr>
+                                <td>${event.name}</td>
+                                <td>${event.description}</td>
+                            </tr>
+                        `;
+                        tableBody.append(eventRow);
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching event details:', error);
+                    alert('There was an error while fetching event details!');
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,55 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "WebClient/1.0.0": {
+        "dependencies": {
+          "jQuery.Fullcalendar": "3.9.0"
+        },
+        "runtime": {
+          "WebClient.dll": {}
+        }
+      },
+      "jQuery/3.2.1": {},
+      "jQuery.Fullcalendar/3.9.0": {
+        "dependencies": {
+          "Moment.js": "2.18.2",
+          "jQuery": "3.2.1"
+        }
+      },
+      "Moment.js/2.18.2": {}
+    }
+  },
+  "libraries": {
+    "WebClient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "jQuery/3.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Sc4jRcsItNXUoNmnPtD9DEnHCy5d4u0GOdDSKYL+b7PKtwajKO1YBJA55241G2M9KRCwSbtxV4ti3gb4n/pIew==",
+      "path": "jquery/3.2.1",
+      "hashPath": "jquery.3.2.1.nupkg.sha512"
+    },
+    "jQuery.Fullcalendar/3.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-soyfwNQ4ZCyJRi08TeC8t96fNbs+yfJblzvBIfAqv12B/UZ1WkioDo3PCO92qQLITvXyj4kSWSaxQFA99xQPww==",
+      "path": "jquery.fullcalendar/3.9.0",
+      "hashPath": "jquery.fullcalendar.3.9.0.nupkg.sha512"
+    },
+    "Moment.js/2.18.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ev4okotpwL6hFslhcXwTdFGU/leceMehiME3fNoAr7IZKD6DHGcAgUfoQco+vAs92Dy4FaHpC07d6Y/17098+Q==",
+      "path": "moment.js/2.18.2",
+      "hashPath": "moment.js.2.18.2.nupkg.sha512"
+    }
+  }
+}

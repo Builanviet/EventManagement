@@ -1,0 +1,251 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "jQuery/3.2.1": {
+        "type": "package"
+      },
+      "jQuery.Fullcalendar/3.9.0": {
+        "type": "package",
+        "dependencies": {
+          "Moment.js": "2.18.2",
+          "jQuery": "3.2.1"
+        }
+      },
+      "Moment.js/2.18.2": {
+        "type": "package"
+      }
+    }
+  },
+  "libraries": {
+    "jQuery/3.2.1": {
+      "sha512": "Sc4jRcsItNXUoNmnPtD9DEnHCy5d4u0GOdDSKYL+b7PKtwajKO1YBJA55241G2M9KRCwSbtxV4ti3gb4n/pIew==",
+      "type": "package",
+      "path": "jquery/3.2.1",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Scripts/jquery-3.2.1-vsdoc.js",
+        "Content/Scripts/jquery-3.2.1.js",
+        "Content/Scripts/jquery-3.2.1.min.js",
+        "Content/Scripts/jquery-3.2.1.min.map",
+        "Content/Scripts/jquery-3.2.1.slim.js",
+        "Content/Scripts/jquery-3.2.1.slim.min.js",
+        "Content/Scripts/jquery-3.2.1.slim.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-3.2.1.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.3.2.1.nupkg.sha512",
+        "jquery.nuspec"
+      ]
+    },
+    "jQuery.Fullcalendar/3.9.0": {
+      "sha512": "soyfwNQ4ZCyJRi08TeC8t96fNbs+yfJblzvBIfAqv12B/UZ1WkioDo3PCO92qQLITvXyj4kSWSaxQFA99xQPww==",
+      "type": "package",
+      "path": "jquery.fullcalendar/3.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Content/fullcalendar.css",
+        "content/Content/fullcalendar.min.css",
+        "content/Content/fullcalendar.print.css",
+        "content/Content/fullcalendar.print.min.css",
+        "content/Scripts/fullcalendar.js",
+        "content/Scripts/fullcalendar.min.js",
+        "content/Scripts/gcal.js",
+        "content/Scripts/gcal.min.js",
+        "content/Scripts/lib/cupertino/images/ui-bg_diagonals-thick_90_eeeeee_40x40.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_glass_50_3baae3_1x400.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_glass_80_d7ebf9_1x400.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_highlight-hard_70_000000_1x100.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png",
+        "content/Scripts/lib/cupertino/images/ui-bg_highlight-soft_25_ffef8f_1x100.png",
+        "content/Scripts/lib/cupertino/images/ui-icons_2694e8_256x240.png",
+        "content/Scripts/lib/cupertino/images/ui-icons_2e83ff_256x240.png",
+        "content/Scripts/lib/cupertino/images/ui-icons_3d80b3_256x240.png",
+        "content/Scripts/lib/cupertino/images/ui-icons_72a7cf_256x240.png",
+        "content/Scripts/lib/cupertino/images/ui-icons_ffffff_256x240.png",
+        "content/Scripts/lib/cupertino/jquery-ui.min.css",
+        "content/Scripts/lib/jquery-ui.min.js",
+        "content/Scripts/lib/jquery.min.js",
+        "content/Scripts/lib/moment.min.js",
+        "content/Scripts/locale-all.js",
+        "content/Scripts/locale/af.js",
+        "content/Scripts/locale/ar-dz.js",
+        "content/Scripts/locale/ar-kw.js",
+        "content/Scripts/locale/ar-ly.js",
+        "content/Scripts/locale/ar-ma.js",
+        "content/Scripts/locale/ar-sa.js",
+        "content/Scripts/locale/ar-tn.js",
+        "content/Scripts/locale/ar.js",
+        "content/Scripts/locale/bg.js",
+        "content/Scripts/locale/bs.js",
+        "content/Scripts/locale/ca.js",
+        "content/Scripts/locale/cs.js",
+        "content/Scripts/locale/da.js",
+        "content/Scripts/locale/de-at.js",
+        "content/Scripts/locale/de-ch.js",
+        "content/Scripts/locale/de.js",
+        "content/Scripts/locale/el.js",
+        "content/Scripts/locale/en-au.js",
+        "content/Scripts/locale/en-ca.js",
+        "content/Scripts/locale/en-gb.js",
+        "content/Scripts/locale/en-ie.js",
+        "content/Scripts/locale/en-nz.js",
+        "content/Scripts/locale/es-do.js",
+        "content/Scripts/locale/es-us.js",
+        "content/Scripts/locale/es.js",
+        "content/Scripts/locale/et.js",
+        "content/Scripts/locale/eu.js",
+        "content/Scripts/locale/fa.js",
+        "content/Scripts/locale/fi.js",
+        "content/Scripts/locale/fr-ca.js",
+        "content/Scripts/locale/fr-ch.js",
+        "content/Scripts/locale/fr.js",
+        "content/Scripts/locale/gl.js",
+        "content/Scripts/locale/he.js",
+        "content/Scripts/locale/hi.js",
+        "content/Scripts/locale/hr.js",
+        "content/Scripts/locale/hu.js",
+        "content/Scripts/locale/id.js",
+        "content/Scripts/locale/is.js",
+        "content/Scripts/locale/it.js",
+        "content/Scripts/locale/ja.js",
+        "content/Scripts/locale/ka.js",
+        "content/Scripts/locale/kk.js",
+        "content/Scripts/locale/ko.js",
+        "content/Scripts/locale/lb.js",
+        "content/Scripts/locale/lt.js",
+        "content/Scripts/locale/lv.js",
+        "content/Scripts/locale/mk.js",
+        "content/Scripts/locale/ms-my.js",
+        "content/Scripts/locale/ms.js",
+        "content/Scripts/locale/nb.js",
+        "content/Scripts/locale/nl-be.js",
+        "content/Scripts/locale/nl.js",
+        "content/Scripts/locale/nn.js",
+        "content/Scripts/locale/pl.js",
+        "content/Scripts/locale/pt-br.js",
+        "content/Scripts/locale/pt.js",
+        "content/Scripts/locale/ro.js",
+        "content/Scripts/locale/ru.js",
+        "content/Scripts/locale/sk.js",
+        "content/Scripts/locale/sl.js",
+        "content/Scripts/locale/sq.js",
+        "content/Scripts/locale/sr-cyrl.js",
+        "content/Scripts/locale/sr.js",
+        "content/Scripts/locale/sv.js",
+        "content/Scripts/locale/th.js",
+        "content/Scripts/locale/tr.js",
+        "content/Scripts/locale/uk.js",
+        "content/Scripts/locale/vi.js",
+        "content/Scripts/locale/zh-cn.js",
+        "content/Scripts/locale/zh-tw.js",
+        "jquery.fullcalendar.3.9.0.nupkg.sha512",
+        "jquery.fullcalendar.nuspec"
+      ]
+    },
+    "Moment.js/2.18.2": {
+      "sha512": "ev4okotpwL6hFslhcXwTdFGU/leceMehiME3fNoAr7IZKD6DHGcAgUfoQco+vAs92Dy4FaHpC07d6Y/17098+Q==",
+      "type": "package",
+      "path": "moment.js/2.18.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Scripts/moment-with-locales.js",
+        "Content/Scripts/moment-with-locales.min.js",
+        "Content/Scripts/moment.js",
+        "Content/Scripts/moment.min.js",
+        "moment.js.2.18.2.nupkg.sha512",
+        "moment.js.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "jQuery.Fullcalendar >= 3.9.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Dell\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\PRN231\\event\\EventManagement\\WebClient\\WebClient.csproj",
+      "projectName": "WebClient",
+      "projectPath": "E:\\PRN231\\event\\EventManagement\\WebClient\\WebClient.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "E:\\PRN231\\event\\EventManagement\\WebClient\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "jQuery.Fullcalendar": {
+            "target": "Package",
+            "version": "[3.9.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
